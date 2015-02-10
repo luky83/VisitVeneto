@@ -3,21 +3,23 @@ extends ../layouts/default
 block content
 	.container: .jumbotron
 		img(src='/images/logo.svg', width='160')
-		h1 Welcome
+		h1 Ciao
 		p This is VisitVeneto website.
-		p It includes the latest versions of
-			| <a href='http://getbootstrap.com/' target='_blank'>Bootstrap</a>
-			| and <a href='http://www.jquery.com/' target='_blank'>jQuery</a>.
-		p Visit the <a href='http://keystonejs.com/guide' target='_blank'>Getting Started</a> guide to learn how to customise it.
+		p It aim to share knowledge about the magnificent land of Veneto, the area around Venice in north-eastern Italy.
+		p Mostly known for its capital city, the most unique town in the world, Veneto is a land dense with culture, art, nature and so many places to visit.
+		p The second most famous city in Veneto is Verona, mostly known for being the town of Romeo and Juliet, the protagonists of the same tragedy by William Shakespeare.
+		P If you plan a visit in our land remeber that only 115 Km divides this two Cityes, that would be just one hour and fifteen minutes by car or by train.
+		P This website was born to show you there is much more to see in between.
+		p My name is Luca... I live near Vicenza... and I can help you plan the best holiday you can't ever imagine.
+		p Vicenza is Andrea Palladio's town, here you can see the maximum expression of neoclassical architecture. Palladio, who lived in the fifteenth century, inspired buildings like the white house and the congress in Washington D.C.
+		P Vicenza is only 45 minutes from both Venice and Verona! The perfect place to set a comprehensive holiday in Veneto!
+		p If you can't wait to come here please enquire today, or just leave a message if you want to know more.
 		hr
 		if user && user.canAccessKeystone
 			p
 				a(href='/keystone/signin').btn.btn-lg.btn-primary Open the Admin UI
 		else
-			p We have created a default Admin user for you with the email <strong>user@keystonejs.com</strong> and the password <strong>admin</strong>.
-			p
-				a(href='/keystone/signin', style='margin-right: 10px').btn.btn-lg.btn-primary Sign in
-				|  to use the Admin UI.
+			p This is a work in progress. Remember to come back from time to time.
 		hr
-		p Remember to <a href='https://github.com/JedWatson/keystone' target='_blank'>Star KeystoneJS on GitHub</a> and
-			| <a href='https://twitter.com/keystonejs' target='_blank'>follow @keystonejs</a> on twitter for updates.
+		p You can also contribute to improve <a href='https://github.com/luky83/visitveneto' target='_blank'>VisitVeneto on GitHub</a> and
+			| <a href='https://twitter.com/VIVeneto' target='_blank'>follow @VIVeneto</a> on twitter for updates.

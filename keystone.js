@@ -11,8 +11,8 @@ var keystone = require('keystone');
 
 keystone.init({
 
-	'name': 'KeystoneJS',
-	'brand': 'KeystoneJS',
+	'name': 'VisitVeneto',
+	'brand': 'VisitVeneto',
 
 	'less': 'public',
 	
@@ -91,7 +91,10 @@ keystone.set('email tests', require('./routes/emails'));
 // Configure the navigation bar in Keystone's Admin UI
 
 keystone.set('nav', {
-	'posts': ['posts', 'post-categories'],
+	'posts' : 'posts',
+	'places' : 'places', 
+	'categories' : 'categories',
+	'accomodations' : ['accomodations','AccomodationType'],
 	'galleries': 'galleries',
 	'enquiries': 'enquiries',
 	'users': 'users'

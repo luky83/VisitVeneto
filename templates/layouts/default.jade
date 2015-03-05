@@ -9,7 +9,7 @@ html
 		meta(name="viewport", content="width=device-width, initial-scale=1.0")
 		meta(http-equiv="X-UA-Compatible" content="IE=edge")
 
-		title= title || 'KeystoneJS'
+		title= title || 'VisitVeneto'
 		link(rel="shortcut icon", href="/favicon.ico", type="image/x-icon")
 
 		//- Customise the stylesheet for your site by editing /public/styles/site.less
@@ -50,7 +50,7 @@ html
 							span.icon-bar
 							span.icon-bar
 							span.icon-bar
-						a.navbar-brand(href='/') KeystoneJS
+						a.navbar-brand(href='/') VisitVeneto
 					.collapse.navbar-collapse
 						ul.nav.navbar-nav.navbar-left
 							each link in navLinks
@@ -105,6 +105,23 @@ html
 			script(src='/keystone/js/content/editor.js')
 
 		//- Add scripts that are globally required by your site here.
+		if data && data.place && data.place.location
+			script(src='https://maps.google.com/maps/api/js?sensor=true')
+			script(type='text/javascript') function lat() { return '#{data.place.location.geo[1]}'}
+				| function lon() { return '#{data.place.location.geo[0]}'} 
+				if data.place.defaultMapsZoom
+					| function zoom() {  return #{data.place.defaultMapsZoom}}
+				else
+					| function zoom() { return #{process.env.GOOGLE_MAP_DEFAULT_ZOOM_LEVEL} }
+			script(src='/js/lib/googlemaps/placeMap.js')
 
+		if data && data.accomodation && data.accomodation.location && data.places
+			script(src='https://maps.google.com/maps/api/js?sensor=true')
+			script(type='text/javascript') function lat() { return '#{process.env.GOOGLE_MAP_DEFAULT_VENETO_LAT}'}
+				| function lon() { return '#{process.env.GOOGLE_MAP_DEFAULT_VENETO_LON}'} 
+				| function zoom() { return #{process.env.GOOGLE_MAP_DEFAULT_VENETO_ZOOM_LEVEL} }
+				| function getAccomodationData(){ return { accomodationLat : '#{data.accomodation.location.geo[1]}', accomodationLon : '#{data.accomodation.location.geo[0]}', accomodationTitle : '#{data.accomodation.title}'} }
+				| function getPlacesData(){ return '!{JSON.stringify(data.places).replace(/'/g,"\\'").replace(/\\"/g,'\\\\"')}' }
+			script(src='/js/lib/googlemaps/accomodationMap.js')
 		//- Include template-specific javascript files by extending the js block
 		block js

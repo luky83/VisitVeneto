@@ -1,0 +1,26 @@
+extends ../layouts/default
+
+block content
+	.container: .row: .col-sm-10.col-sm-offset-1.col-md-8.col-md-offset-2
+		article
+			p: a(href='/accomodations') &larr; back to the accomodations list
+			hr
+			if !data.accomodation
+				h2 Invalid Accomodation.
+			else
+				header
+					h1= data.accomodation.title
+					h5 Accomodations available 
+						if data.accomodation.accomodationTypes && data.accomodation.accomodationTypes.length
+							each cat, cat_i in data.accomodation.accomodationTypes
+								a(href='/accomodations/' + cat.key)= cat.name
+								if cat_i < data.accomodation.accomodationTypes.length - 1
+									| , 
+								else
+									|  
+				.accomodation
+					if data.accomodation.image.exists
+						.image-wrap: img(src=data.place._.image.fit(750,450)).img-responsive
+					!= data.accomodation.content.full
+					if data.accomodation.location
+						#map(style='width:81%;height:500px;')

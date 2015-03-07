@@ -1,0 +1,35 @@
+extends ../layouts/default
+
+block content
+	.container: .row: .col-sm-10.col-sm-offset-1.col-md-8.col-md-offset-2
+		article
+			p: a(href='/places') &larr; back to the places list
+			hr
+			if !data.place
+				h2 Invalid Place.
+			else
+				header
+					h1= data.place.title
+					if data.place.UNESCO
+						.img-unesco-logo: img(src='/images/UNESCO_World_Heritage_Site_logo.svg').img-responsive
+					h5 Posted 
+						if data.place.categories && data.place.categories.length
+							| in 
+							each cat, cat_i in data.place.categories
+								a(href='/places/' + cat.key)= cat.name
+								if cat_i < data.place.categories.length - 1
+									| , 
+								else
+									|  
+				.place
+					if data.place.image.exists
+						.image-wrap: img(src=data.place._.image.fit(750,450)).img-responsive
+					!= data.place.content.full
+					if data.place.location
+						#map(style='width:81%;height:500px;')
+					if data.place.wikipedia 
+						.wikipedia-url: a(href=data.place.wikipedia, target="_blank", rel="nofollow")= 'Wikipedia article'
+					if data.place.UNESCO
+						.unesco-text: p #{data.place.title} is a 
+							a(href='http://whc.unesco.org/', target="_blank", rel="nofollow")= 'U.N.E.S.C.O. '
+							| World heritage site!

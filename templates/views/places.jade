@@ -1,5 +1,15 @@
 extends ../layouts/default
 
+block js
+	script(src='https://maps.google.com/maps/api/js?sensor=true')
+	script(type='text/javascript') function lat() { return '#{process.env.GOOGLE_MAP_DEFAULT_VENETO_LAT}'}
+			| function lon() { return '#{process.env.GOOGLE_MAP_DEFAULT_VENETO_LON}'} 
+			| function zoom() { return #{process.env.GOOGLE_MAP_DEFAULT_VENETO_ZOOM_LEVEL} } 
+			if data.placesMarkers
+				| function getPlacesData() { return '!{JSON.stringify(data.placesMarkers).replace(/'/g,"\\'").replace(/\\"/g,'\\\\"')}' }
+	script(src='/js/lib/googlemaps/placesMap.js')
+	
+
 mixin place(place)
 	.place(data-ks-editable=editable(user, { list: 'Place', id: place.id }))
 		h2: a(href='/places/place/' + place.slug)= place.title
@@ -24,6 +34,7 @@ block intro
 block content
 	.container: .row
 		.col-sm-8.col-md-9
+			#map(style='width:81%;height:500px;')
 			if filters.category && !data.category
 				h3.text-muted Invalid Category.
 			else

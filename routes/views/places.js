@@ -78,6 +78,21 @@ exports = module.exports = function(req, res) {
 		
 	});
 	
+	// Load the places
+	view.on('init', function(next) {
+		
+		keystone.list('Place').model.find().exec(function(err, results) {
+			var markers = []
+			results.forEach(function (result, i, results) {
+				if (result.carReachableLocation.geo) markers.push({ title : result.title, slug : result.slug, lat : result.carReachableLocation.geo[1], lon : result.carReachableLocation.geo[0] })
+				else markers.push({ title : result.title, slug : result.slug, lat : result.location.geo[1], lon : result.location.geo[0] })
+			});
+			locals.data.placesMarkers = markers;
+			next(err);
+		});
+		
+	});
+	
 	// Render the view
 	view.render('places');
 	

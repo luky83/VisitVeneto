@@ -49,7 +49,21 @@ exports = module.exports = function(req, res) {
 				if (result.carReachableLocation.geo) markers.push({ title : result.title, slug : result.slug, lat : result.carReachableLocation.geo[1], lon : result.carReachableLocation.geo[0] })
 				else markers.push({ title : result.title, slug : result.slug, lat : result.location.geo[1], lon : result.location.geo[0] })
 			});
-			locals.data.places = markers;
+			locals.data.placesMarkers = markers;
+			next(err);
+		});
+		
+	});
+	
+	// Load the categories
+	view.on('init', function(next) {
+		
+		keystone.list('Category').model.find().exec(function(err, results) {
+			var categories = []
+			results.forEach(function (result, i, results) {
+				categories.push({ key : result.key, name : result.name, color : result.color })
+			});
+			locals.data.categories = categories;
 			next(err);
 		});
 		

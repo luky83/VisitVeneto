@@ -1,26 +1,48 @@
 extends ../layouts/default
 
+block js
+	if data.accomodation.location && data.placesMarkers
+		script(src='https://maps.google.com/maps/api/js?sensor=true')
+		script(type='text/javascript') function lat() { return '#{process.env.GOOGLE_MAP_DEFAULT_VENETO_LAT}'}
+			| function lon() { return '#{process.env.GOOGLE_MAP_DEFAULT_VENETO_LON}'} 
+			| function zoom() { return #{process.env.GOOGLE_MAP_DEFAULT_VENETO_ZOOM_LEVEL} }
+			| function getAccomodationData(){ return { accomodationLat : '#{data.accomodation.location.geo[1]}', accomodationLon : '#{data.accomodation.location.geo[0]}', accomodationTitle : '#{data.accomodation.title}'} }
+			| function getPlacesData(){ return '!{JSON.stringify(data.placesMarkers).replace(/'/g,"\\'").replace(/\\"/g,'\\\\"')}' }
+		script(src='/js/lib/googlemaps/accomodationMap.js')
+
+block intro
+	.container
+		p: a(href='/accomodations') &larr; back to the accomodations list
+		hr
+		if !data.accomodation
+			h2 Invalid Accomodation.
+		else
+			header
+				h1= data.accomodation.title
+				h5 Accomodations available 
+					if data.accomodation.accomodationTypes && data.accomodation.accomodationTypes.length
+						each cat, cat_i in data.accomodation.accomodationTypes
+							a(href='/accomodations/' + cat.key)= cat.name
+							if cat_i < data.accomodation.accomodationTypes.length - 1
+								| , 
+							else
+								|  
+
 block content
-	.container: .row: .col-sm-10.col-sm-offset-1.col-md-8.col-md-offset-2
-		article
-			p: a(href='/accomodations') &larr; back to the accomodations list
-			hr
-			if !data.accomodation
-				h2 Invalid Accomodation.
-			else
-				header
-					h1= data.accomodation.title
-					h5 Accomodations available 
-						if data.accomodation.accomodationTypes && data.accomodation.accomodationTypes.length
-							each cat, cat_i in data.accomodation.accomodationTypes
-								a(href='/accomodations/' + cat.key)= cat.name
-								if cat_i < data.accomodation.accomodationTypes.length - 1
-									| , 
-								else
-									|  
-				.accomodation
-					if data.accomodation.image.exists
-						.image-wrap: img(src=data.place._.image.fit(750,450)).img-responsive
-					!= data.accomodation.content.full
-					if data.accomodation.location
-						#map(style='width:81%;height:500px;')
+	.container: .row
+		.col-sm-8.col-md-9
+			.accomodation
+				if data.accomodation.image.exists
+					.image-wrap: img(src=data.place._.image.fit(750,450)).img-responsive
+				!= data.accomodation.content.full
+				if data.accomodation.location
+					#map(style='width:81%;height:500px;')
+				
+		if data.categories.length
+			.col-sm-4.col-md-3
+				h2 Toggle Markers
+				.list-group(style='margin-top: 70px;')
+					p(id='allMarkers' , onclick='$(".catMarkers").removeClass("active"); $(this).addClass("active"); resetMarkers()').list-group-item.active All Markers
+					each cat in data.categories
+						p(id= cat.key + 'Markers', onclick='$(allMarkers).removeClass("active"); $(this).toggleClass("active"); toggleMarkers("' + cat.key + '", "' + cat.color + '")').list-group-item.catMarkers= cat.name
+						

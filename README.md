@@ -17,6 +17,6 @@ To update KeystoneJS and other node dependencies try:
 
 - npm install -g npm-check-updates
 
-- npm-check-updates
+- npm-check-updates -u
 
 - npm install
